@@ -51,6 +51,24 @@ const routes = [
     },
   },
   {
+    path: "/user",
+    name: "user",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "User" */ "../views/User.vue"),
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/login",
+    name: "login",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+  },
+  {
     path: "/404",
     alias: "*",
     name: "404",
@@ -63,7 +81,35 @@ const routes = [
 
 const router = new VueRouter({
   mode: "history",
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      const position = {};
+      if (to.hash) {
+        position.selector = to.hash;
+        if (to.hash === "#experience") {
+          position.offset = { y: 180 };
+        }
+        if (document.querySelector(to.hash)) {
+          return position;
+        }
+        return false;
+      }
+    }
+  },
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    // go to login page
+    if (!store.user) {
+      next({ name: "login" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 export default router;

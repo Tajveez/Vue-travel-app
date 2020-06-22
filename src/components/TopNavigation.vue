@@ -14,6 +14,9 @@
       <li class="links">
         <router-link to="/about">About</router-link>
       </li>
+      <li class="links">
+        <router-link to="/user">Dashboard</router-link>
+      </li>
     </ul>
   </div>
 </template>
@@ -24,6 +27,15 @@ export default {
     return {
       destinations: store.destinations
     };
+  },
+  computed: {
+    routeName() {
+      if (store.user) {
+        return "Dashboard";
+      } else {
+        return "Login";
+      }
+    }
   }
 };
 </script>
@@ -31,7 +43,12 @@ export default {
 <style>
 #nav {
   display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
   background: lavender;
+  border-bottom: 1px solid grey;
+  z-index: 1;
 }
 
 #nav {

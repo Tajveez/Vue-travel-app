@@ -1,4 +1,5 @@
 export default {
+  user: false,
   destinations: [
     {
       name: "Brazil",
