@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
@@ -38,6 +39,25 @@ const routes = [
         props: true,
       },
     ],
+    beforeEnter: (to, from, next) => {
+      const exists = store.destinations.find(
+        (destination) => destination.slug === to.params.slug
+      );
+      if (exists) {
+        next();
+      } else {
+        next({ name: "404" });
+      }
+    },
+  },
+  {
+    path: "/404",
+    alias: "*",
+    name: "404",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "404" */ "../views/404.vue"),
   },
 ];
 

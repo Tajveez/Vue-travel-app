@@ -22,10 +22,9 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-,
 .slide-enter-active,
 .slide-leave-active {
-  transition: opacity 1s, transform 1s;
+  transition: opacity 0.3s, transform 0.3s;
 }
 .slide-enter,
 .slide-leave-to {
